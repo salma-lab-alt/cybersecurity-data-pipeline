@@ -1,0 +1,42 @@
+# Cybersecurity Data Pipeline - Configuration
+
+# === Dataset ===
+dataset:
+  name: CIC-IDS2017 (DistriNet corrected)
+  source_url: https://www.unb.ca/cic/datasets/ids-2017.html
+  corrected_version: true
+  raw_path: data/raw/
+  bronze_path: data/bronze/
+  silver_path: data/silver/
+  gold_path: data/gold/
+
+# === Spark ===
+spark:
+  app_name: cybersecurity-pipeline
+  master: local[*]
+
+# === Data Quality thresholds ===
+quality:
+  max_null_ratio: 0.05
+  max_duplicate_ratio: 0.01
+  min_rows_bronze: 1000
+
+# === Machine Learning ===
+ml:
+  test_size: 0.2
+  random_state: 42
+  models:
+    - name: random_forest
+      params:
+        n_estimators: 100
+        max_depth: 15
+    - name: xgboost
+      params:
+        n_estimators: 200
+        max_depth: 6
+        learning_rate: 0.1
+
+# === MLflow ===
+mlflow:
+  tracking_uri: file:./mlruns
+  experiment_name: cic-ids2017-intrusion-detection
